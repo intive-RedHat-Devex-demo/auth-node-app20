@@ -1,0 +1,33 @@
+apiVersion: tekton.dev/v1
+kind: PipelineRun
+metadata:
+  name: auth-node-app20-pipeline-run-init
+  namespace: demo-prod
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded  
+  labels:
+    tekton.dev/pipeline: auth-node-app20-pipeline
+    janus-idp.io/tekton: auth-node-app20
+    backstage.io/kubernetes-id: auth-node-app20
+    type: pipeline
+spec:
+  params:
+    - name: source-repo
+      value: 'https://github.com/intive-RedHat-Devex-demo/auth-node-app20.git'
+    - name: source-branch
+      value: main
+    - name: output-image
+      value: image-registry.openshift-image-registry.svc:5000/demo-prod/auth-node-app20
+  pipelineRef:
+    name: auth-node-app20-pipeline
+  # serviceAccountName: pipeline
+  workspaces:
+    - name: source-folder
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi

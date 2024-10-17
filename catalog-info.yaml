@@ -1,0 +1,19 @@
+
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: auth-node-app20
+  description: Create a starter Node.js backend application with a CI/CD pipeline
+  annotations:
+    tektonci/build-namespace: demo-prod
+    janus-idp.io/tekton:  auth-node-app20
+    backstage.io/kubernetes-namespace: demo-prod
+    backstage.io/kubernetes-id: auth-node-app20
+    argocd/app-name: auth-node-app20
+    backstage.io/techdocs-ref: dir:.
+    github.com/project-slug: intive-RedHat-Devex-demo/auth-node-app20
+spec:
+  type: api
+  system: intive-idp
+  lifecycle: production
+  owner: intive-RedHat-Devex-demo

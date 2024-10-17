@@ -1,0 +1,38 @@
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: auth-node-app20
+  labels:
+    app: auth-node-app20
+    argocd/app-name: auth-node-app20
+    argocd/app-selector: auth-node-app20
+    backstage.io/kubernetes-id: auth-node-app20
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: auth-node-app20
+  template:
+    metadata:
+      labels:
+        app: auth-node-app20
+        app.kubernetes.io/component: backstage
+        backstage.io/kubernetes-id: demo-prod
+        argocd.argoproj.io/instance: auth-node-app20
+        argocd/app-name: auth-node-app20
+        argocd/app-selector: auth-node-app20
+    spec:
+      containers:
+        - name: auth-node-app20
+          image: image-registry.openshift-image-registry.svc:5000/demo-prod/auth-node-app20:latest
+          ports:
+            - name: http-3000
+              containerPort: 3000
+              protocol: TCP
+          resources:
+            limits:
+              memory: '128Mi'
+              cpu: '100m'
+            # requests:
+            #   cpu: '100m'
+            #   memory: '256Mi'

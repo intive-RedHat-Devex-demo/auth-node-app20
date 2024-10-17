@@ -1,0 +1,19 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: auth-node-app20
+  labels:
+    app: auth-node-app20
+    app.kubernetes.io/component: backstage
+    backstage.io/kubernetes-id: demo-prod
+    argocd.argoproj.io/instance: auth-node-app20
+    argocd/app-name: auth-node-app20
+    argocd/app-selector: auth-node-app20
+spec:
+  ports:
+    - name: http-3000
+      port: 3000
+      protocol: TCP
+      targetPort: 3000
+  selector:
+    app: auth-node-app20

@@ -1,0 +1,29 @@
+apiVersion: config.openshift.io/v1
+kind: Ingress
+metadata:
+  name: auth-node-app20
+  namespace: demo-prod
+  labels:
+    app: auth-node-app20
+    app.kubernetes.io/component: backstage
+    backstage.io/kubernetes-id: demo-prod
+    argocd.argoproj.io/instance: auth-node-app20
+    argocd/app-name: auth-node-app20
+    argocd/app-selector: auth-node-app20
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "https://auth-node-app20-demo-prod-apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com"
+      secretName: auth-node-app20-tls
+  rules:
+  - host: "https://auth-node-app20-demo-prod-apps.rosa.e5n9l5l2t8z7q0d.qnbq.p3.openshiftapps.com"
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: auth-node-app20
+              port:
+                number: 3000

@@ -1,0 +1,31 @@
+apiVersion: triggers.tekton.dev/v1beta1
+kind: EventListener
+metadata:
+  name: auth-node-app20-el
+  namespace: demo-prod
+  labels:
+    janus-idp.io/tekton: auth-node-app20
+    app.kubernetes.io/instance: auth-node-app20
+    backstage.io/kubernetes-id: auth-node-app20
+spec:
+  # serviceAccountName: pipeline
+  triggers:
+    - bindings:
+        - kind: ClusterTriggerBinding
+          ref: github-pullreq
+      interceptors:
+        - params:
+            - name: eventTypes
+              value: ['pull_request']
+          ref:
+            name: github
+        - params:
+            - name: git-revision
+              value: >-
+                (body.ref.contains('main'))
+            - name: overlays
+              value: null
+          ref:
+            name: cel
+      template:
+        ref: auth-node-app20-run-pipeline
